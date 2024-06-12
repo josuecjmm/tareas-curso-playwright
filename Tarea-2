@@ -1,0 +1,5 @@
+document.querySelector('#username').value = 'practice'
+
+document.querySelector('#password').value = 'SuperSecretPassword'
+
+document.querySelector('#login > button').click()
