@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
-const {USER_SAUCE_DEMO, PASSWORD_SAUCE_DEMO} = process.env; 
+const { USER_SAUCE_DEMO, PASSWORD_SAUCE_DEMO } = process.env;
+const LoginPage = require('../pageObjects/login.page')
 
 test.describe('Login', () => {
     test.beforeEach(async ({ page }) => {
@@ -7,19 +8,19 @@ test.describe('Login', () => {
     })
 
     test('Positive Login', async ({ page }) => {
-        await page.locator('[data-test="username"]').fill(USER_SAUCE_DEMO);
-        await page.locator('[data-test="password"]').fill(PASSWORD_SAUCE_DEMO);
-        await page.locator('[data-test="login-button"]').click();
+        const loginPage = new LoginPage(page)
+        await loginPage.login(USER_SAUCE_DEMO, PASSWORD_SAUCE_DEMO)
+        await page.pause()
         const pageLogo = page.locator('.app_logo')
         await pageLogo.waitFor({ state: "visible" })
         await expect(pageLogo).toBeVisible()
         await expect(pageLogo).toHaveText('Swag Labs')
+        await page.pause()
     })
 
-    test('Negative Login', async ({ page }) => {
-        await page.locator('[data-test="username"]').fill('iasfhsdifhsdiu');
-        await page.locator('[data-test="password"]').fill('sdfhsdifuhsd');
-        await page.locator('[data-test="login-button"]').click();
+    test.only('Negative Login', async ({ page }) => {
+        const loginPage = new LoginPage(page)
+        await loginPage.login('asdasdas', 'asadasda')
         const errorBanner = page.locator('[data-test="error"]')
         await errorBanner.waitFor({ state: "visible" })
         const pageLogo = page.locator('.app_logo')
