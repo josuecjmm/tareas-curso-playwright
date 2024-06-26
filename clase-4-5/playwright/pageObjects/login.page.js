@@ -1,7 +1,11 @@
 // DashboardPage, LandingPage, RegisterUserPage, 
+
+const ParentPage = require("./parentPage.page");
+
 // ForgotPasswordPage, ProductListPage, OpenedProductPage
-class LoginPage {
+class LoginPage extends ParentPage {
     constructor(page) {
+        super()
         this.page = page; 
     }
 
@@ -21,14 +25,22 @@ class LoginPage {
         return this.page.locator('[data-test="login-button"]')
     }
 
+    get bannerError() {
+        return this.page.locator('[data-test="error"]')
+    }
+
     // METODOS 
     // action de la pagina
     // loginUser, openCart, createItem
     
     async login(user, password) {
-        await this.inputUser.fill(user)
-        await this.inputPassword.fill(password)
-        await this.btnLogin.click()
+        await super.fillInput(this.inputUser, user)
+        await super.fillInput(this.inputPassword, password)
+        await super.clickElement(this.btnLogin)
+    }
+
+    async waitForBannerError() {
+        await super.waitForElementVisible(this.bannerError)
     }
 }
 
