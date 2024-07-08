@@ -1,12 +1,8 @@
-const { test, expect } = require('@playwright/test');
+const { expect } = require('@playwright/test');
+const {test} = require('../utils/fixtures')
 const { USER_SAUCE_DEMO, PASSWORD_SAUCE_DEMO } = process.env;
-const LoginPage = require('../pageObjects/login.page')
 const { faker } = require('@faker-js/faker');
 const { getItem, setItem } = require('../utils/cache');
-const ProductListPage = require('../pageObjects/products.page');
-
-let loginPage;
-let productsListPage;
 
 test.describe('Login', () => {
     test.beforeAll(() => {
@@ -20,25 +16,23 @@ test.describe('Login', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto('/')
-        loginPage = new LoginPage(page)
-        productsListPage = new ProductListPage(page)
     })
 
-    test('Positive Login', async () => {
+    test('Positive Login', async ({loginPage, productListPage}) => {
         await loginPage.login(USER_SAUCE_DEMO, PASSWORD_SAUCE_DEMO)
-        await productsListPage.waitForProductsPage()
-        await expect(productsListPage.titlePage).toHaveText('Swag Labs')
-        await productsListPage.verifyPageLoaded()
+        await productListPage.waitForProductsPage()
+        await expect(productListPage.titlePage).toHaveText('Swag Labs')
+        await productListPage.verifyPageLoaded()
     })
 
-    test('Negative Login', async () => {
+    test('Negative Login', async ({loginPage, productListPage}) => {
         const fakeUser = getItem('fakeUser')
         await loginPage.login(
             fakeUser.username,
             fakeUser.password
         )
         await loginPage.waitForBannerError()
-        await expect(productsListPage.titlePage).not.toBeVisible()
+        await expect(productListPage.titlePage).not.toBeVisible()
         await expect(loginPage.bannerError).toContainText('Username and password do not match any user in this service')
     })
 })

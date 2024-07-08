@@ -2,7 +2,7 @@ const cache = {};
 
 function getItem(key) {
     if(!cache[key]) {
-        console.error(`${key} is not a valid property of cache`)
+        throw new Error(`${key} is not a valid property of cache`)
     } else {
         return cache[key]
     }

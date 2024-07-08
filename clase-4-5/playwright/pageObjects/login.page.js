@@ -5,7 +5,7 @@ const ParentPage = require("./parentPage.page");
 // ForgotPasswordPage, ProductListPage, OpenedProductPage
 class LoginPage extends ParentPage {
     constructor(page) {
-        super()
+        super(page)
         this.page = page; 
     }
 

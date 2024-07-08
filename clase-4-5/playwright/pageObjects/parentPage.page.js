@@ -1,4 +1,12 @@
 class ParentPage {
+    constructor(page) {
+        this.page = page;
+    }
+
+    /**
+     * Function to click on an element 
+     * @param {import("@playwright/test").Locator} element
+     */
     async clickElement(element) {
         await element.waitFor()
         await element.click()
@@ -10,11 +18,16 @@ class ParentPage {
     }
 
     async waitForElementVisible(element) {
-        await element.waitFor({state: 'visible'})
+        await element.waitFor({ state: 'visible' })
     }
-
-    async waitForUrlOnPage(page, url ) {
-        await page.waitForURL(url)
+    
+    /**
+     * Function to wait for an url to happen on the page
+     * @param {string} url
+     * @returns {Promise<void>}
+     */
+    async waitForUrlOnPage(url) {
+        await this.page.waitForURL(url)
     }
 
 }
